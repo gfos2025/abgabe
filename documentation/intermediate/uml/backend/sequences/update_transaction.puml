@@ -1,0 +1,34 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant TransactionController
+participant TransactionService
+participant Database
+participant LogService
+
+User -> TransactionController: PATCH /api/v1/transactions/{id}
+TransactionController -> TransactionService: Aktualisiere Transaktion
+TransactionService -> Database: Hol Transaktion nach ID
+alt Transaktion nicht gefunden
+    Database --> TransactionService: Null
+    TransactionService --> TransactionController: Fehlermeldung (404 Not Found)
+    TransactionController --> User: Antwort (404 Not Found)
+else
+    TransactionService -> TransactionService: Überprüfe Statusübergang
+    alt Ungültiger Statusübergang
+        TransactionService --> TransactionController: Fehlermeldung (400 Bad Request)
+        TransactionController --> User: Antwort (400 Bad Request)
+    else
+        TransactionService -> Database: Aktualisiere Transaktion
+        Database --> TransactionService: Bestätigung
+        TransactionService --> TransactionController: Erfolg (200 OK)
+        TransactionController -> LogService: Protokolliere Aktion
+        LogService -> Database: Speichere Log
+        Database --> LogService: Bestätigung
+        LogService --> TransactionController: Erfolg
+        TransactionController --> User: Antwort (200 OK)
+    end
+end
+@enduml

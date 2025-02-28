@@ -1,0 +1,7 @@
+@startuml
+class AppointmentController {
+    + createAppointment(Context ctx) : void
+    + updateAppointment(Context ctx) : void
+    + deleteAppointment(Context ctx) : void
+}
+@enduml

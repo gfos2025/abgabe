@@ -1,0 +1,27 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300 
+
+actor User
+participant CustomerController
+participant CustomerService
+participant LogService
+participant Database 
+
+User -> CustomerController: DELETE /api/v1/customers/{id}
+CustomerController -> CustomerService: Lösche Kunden mit ID {id}
+CustomerService -> Database: Lösche Kunden mit ID {id}
+alt Datenbankfehler
+    Database --> CustomerService: Fehler
+    CustomerService --> CustomerController: Interner Serverfehler (500)
+    CustomerController --> User: Antwort (500 Internal Server Error)
+else
+    Database --> CustomerService: Bestätigung
+    CustomerService --> CustomerController: Erfolg
+    CustomerController -> LogService: Protokolliere Aktion
+    LogService -> Database: Speichere Log
+    Database --> LogService: Bestätigung
+    LogService --> CustomerController: Erfolg
+    CustomerController --> User: Antwort (200 OK)
+end
+@enduml

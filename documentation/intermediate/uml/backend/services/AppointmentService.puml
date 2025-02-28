@@ -1,0 +1,9 @@
+@startuml
+class AppointmentService {
+    + createAppointment(CreateAppointment appointment_data) : void
+    + getUserAppointments(UUID id) : List<AppointmentDTO>
+    + getCustomerAppointments(UUID id) : List<AppointmentDTO>
+    + getAppointment(UUID id) : Appointment
+    + deleteAppointment(UUID id) : void
+}
+@enduml

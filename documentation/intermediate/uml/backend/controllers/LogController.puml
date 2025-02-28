@@ -1,0 +1,10 @@
+@startuml
+class TransactionController {
+    + createTransaction(Context ctx) : void
+    + getTransactions(Context ctx) : void
+    + getTransaction(Context ctx) : void
+    - isValidStatusTransition(TransactionStatus currentStatus, TransactionStatus newStatus) : boolean
+    + updateTransaction(Context ctx) : void
+    + generateReport(Context ctx) : void
+}
+@enduml

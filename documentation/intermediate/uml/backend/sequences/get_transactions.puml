@@ -1,0 +1,16 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant TransactionController
+participant TransactionService
+participant Database
+
+User -> TransactionController: GET /api/v1/transactions/
+TransactionController -> TransactionService: Hol Transaktionen
+TransactionService -> Database: Suche Transaktionen mit Filtern
+Database --> TransactionService: Ergebnisliste
+TransactionService --> TransactionController: Transaktionen als DTOs
+TransactionController --> User: Antwort (200 OK)
+@enduml

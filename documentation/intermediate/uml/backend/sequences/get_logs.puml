@@ -1,0 +1,27 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300  
+
+actor User
+participant LogController
+participant LogService
+participant Database
+
+User -> LogController: POST /api/v1/logs (Kriterien)
+LogController -> LogService: Hole Logs basierend auf Kriterien
+LogService -> Database: Erstelle und führe Query aus
+Database --> LogService: Liste von Logs
+LogService --> LogController: Erfolg (Liste von Logs)
+LogController --> User: Antwort (200 OK)
+
+alt Keine Logs gefunden
+    LogService --> LogController: Leere Liste
+    LogController --> User: Antwort (200 OK mit leerer Liste)
+end
+
+alt Fehler beim Abrufen der Logs
+    Database --> LogService: Fehlermeldung
+    LogService --> LogController: Fehler (500 Internal Server Error)
+    LogController --> User: Antwort (500 Internal Server Error)
+end
+@enduml

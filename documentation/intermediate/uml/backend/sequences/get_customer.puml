@@ -1,0 +1,26 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300 
+
+actor User
+participant CustomerController
+participant CustomerService
+participant Database 
+
+User -> CustomerController: GET /api/v1/customers/{id}
+CustomerController -> CustomerService: Hole Kunden mit ID {id}
+CustomerService -> Database: Lese Kunden mit ID {id}
+alt Kunde nicht gefunden
+    Database --> CustomerService: null
+    CustomerService --> CustomerController: null
+    CustomerController --> User: Antwort (404 Not Found)
+else Datenbankfehler
+    Database --> CustomerService: Fehler
+    CustomerService --> CustomerController: Fehlermeldung (500 Internal Server Error)
+    CustomerController --> User: Antwort (500 Internal Server Error)
+else
+    Database --> CustomerService: Kunde
+    CustomerService --> CustomerController: Kunde
+    CustomerController --> User: Antwort (200 OK)
+end
+@enduml

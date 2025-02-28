@@ -1,0 +1,23 @@
+@startuml
+
+skinparam Shadowing false
+actor User
+participant UserController 
+participant UserService 
+participant Database 
+
+User -> UserController: POST /api/v1/auth/login
+UserController -> UserService: Überprüfe Anmeldedaten (E-Mail und Passwort)
+UserService -> Database: Suche Benutzer nach E-Mail
+Database --> UserService: Gebe Benutzerobjekt oder null zurück
+alt Ungültige Anmeldeinformationen
+    UserService --> UserController: Fehlermeldung (401 Unauthorized): Ungültige E-Mail oder Passwort
+    UserController --> User: Antwort (401 Unauthorized)
+else Gültige Anmeldeinformationen
+    UserService --> UserController: Bestätige erfolgreiche Authentifizierung (200 OK)
+    UserController -> Database: Setze Sitzungsattribute (Session-Attribute)
+    Database --> UserController: Bestätige Erfolg der Sitzungserstellung
+    UserController --> User: Antwort (200 OK) mit UserDTO
+end
+
+@enduml

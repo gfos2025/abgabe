@@ -1,0 +1,21 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant UserController
+participant UserService
+participant Database
+
+User -> UserController: GET /api/v1/users
+UserController -> UserService: Lade alle Benutzer
+alt Fehler bei der Abfrage
+    UserService --> UserController: Fehlermeldung (500 Internal Server Error)
+    UserController --> User: Antwort (500 Internal Server Error)
+else Erfolgreiche Abfrage
+    UserService -> Database: Hole Benutzerdaten
+    Database --> UserService: Benutzerliste
+    UserService --> UserController: Benutzer-Liste
+    UserController --> User: Antwort (200 OK)
+end
+@enduml

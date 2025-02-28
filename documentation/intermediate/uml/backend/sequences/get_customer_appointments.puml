@@ -1,0 +1,22 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300 
+
+actor User
+participant CustomerController
+participant AppointmentService
+participant Database 
+
+User -> CustomerController: GET /api/v1/customers/{id}/appointments
+CustomerController -> AppointmentService: Hole Termine für Kunden mit ID {id}
+AppointmentService -> Database: Lese Termine für Kunden mit ID {id}
+alt Datenbankfehler
+    Database --> AppointmentService: Fehler
+    AppointmentService --> CustomerController: Interner Serverfehler (500)
+    CustomerController --> User: Antwort (500 Internal Server Error)
+else
+    Database --> AppointmentService: Terminliste
+    AppointmentService --> CustomerController: Terminliste
+    CustomerController --> User: Antwort (200 OK)
+end
+@enduml

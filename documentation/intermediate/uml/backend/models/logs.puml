@@ -1,0 +1,29 @@
+@startuml
+class Log {
+    - UUID id
+    - String message
+    - LogType type
+    - LocalDateTime timestamp
+    - UUID userId
+
+    + Log()
+    + Log(String, LogType, LocalDateTime, UUID)
+    + getId(), setMessage(), getType(), getTimestamp(), getUserId()
+    + setId(UUID), setMessage(String), setType(LogType), setTimestamp(LocalDateTime), setUserId(UUID)
+}
+
+enum LogType {
+    REGISTERED_USER
+    CREATED_CUSTOMER
+    UPDATED_CUSTOMER
+    DELETED_CUSTOMER
+    CREATED_TRANSACTION
+    UPDATED_TRANSACTION
+    CREATED_APPOINTMENT
+    UPDATED_APPOINTMENT
+    DELETED_APPOINTMENT
+}
+
+
+Log "1" -- "1" LogType : hat einen Typ
+@enduml

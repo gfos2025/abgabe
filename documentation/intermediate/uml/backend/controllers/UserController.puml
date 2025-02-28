@@ -1,0 +1,15 @@
+@startuml
+class UserController {
+    - Argon2 argon2
+
+    + UserController()
+    + login(Context ctx) : void
+    + register(Context ctx) : void
+    + getUsers(Context ctx) : void
+    + getUser(Context ctx) : void
+    + getEmployees(Context ctx) : void
+    + getAppointments(Context ctx) : void
+    + getSettings(Context ctx) : void
+    + updateSettings(Context ctx) : void
+}
+@enduml

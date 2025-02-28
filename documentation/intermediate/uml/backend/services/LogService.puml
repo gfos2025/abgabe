@@ -1,0 +1,6 @@
+@startuml
+class LogService {
+    + createEntry(String message, LogType type, UUID user_id) : void
+    + getLogs(GetLogs criteria) : List<Log>
+}
+@enduml

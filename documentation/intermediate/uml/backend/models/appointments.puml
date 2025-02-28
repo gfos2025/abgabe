@@ -1,0 +1,57 @@
+@startuml
+class Appointment {
+    - UUID id
+    - LocalDateTime startTime
+    - LocalDateTime endTime
+    - List participants
+    - String description
+
+    + getId(), getStartTime(), getEndTime(), getParticipants(), getDescription()
+    + setStartTime(LocalDateTime), setEndTime(LocalDateTime), setParticipants(List), setDescription(String)
+}
+
+class AppointmentParticipant {
+    - UUID id
+    - Appointment appointment
+    - User user
+    - Customer customer
+    - AppointmentParticipentRole role
+
+    + getId(), getAppointment(), getUser(), getCustomer(), getRole()
+    + setId(UUID), setAppointment(Appointment), setUser(User), setCustomer(Customer), setRole(AppointmentParticipentRole)
+}
+
+enum AppointmentParticipentRole {
+    ORGANIZER
+    PARTICIPANT
+}
+
+class AppointmentDTO {
+    - UUID id
+    - LocalDateTime startTime
+    - LocalDateTime endTime
+    - String description
+    - List participants
+
+    + AppointmentDTO(UUID, LocalDateTime, LocalDateTime, String, List)
+    + getId(), getStartTime(), getEndTime(), getDescription(), getParticipants()
+    + setId(UUID), setStartTime(LocalDateTime), setEndTime(LocalDateTime), setDescription(String), setParticipants(List)
+}
+
+class AppointmentParticipantDTO {
+    - UUID id
+    - String name
+    - UUID userId
+    - UUID customerId
+    - AppointmentParticipentRole role
+
+    + AppointmentParticipantDTO(UUID, String, UUID, UUID, AppointmentParticipentRole)
+    + getId(), getName(), getUserId(), getCustomerId(), getRole()
+    + setId(UUID), setName(String), setUserId(UUID), setCustomerId(UUID), setRole(AppointmentParticipentRole)
+}
+
+Appointment "1" -- "0..*" AppointmentParticipant : hat Teilnehmer
+AppointmentParticipant "1" -- "1" AppointmentParticipentRole : hat eine Rolle
+Appointment "1" -- "0..*" AppointmentDTO : wird abgebildet durch
+AppointmentParticipant "1" -- "0..*" AppointmentParticipantDTO : wird abgebildet durch
+@enduml

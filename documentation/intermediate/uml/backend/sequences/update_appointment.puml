@@ -1,0 +1,27 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant AppointmentController
+participant AppointmentService
+participant LogService
+participant Database
+
+User -> AppointmentController: PATCH /api/v1/appointments/{id}
+AppointmentController -> AppointmentService: Validiere Aktualisierungsdaten
+alt Ungültige Eingaben
+    AppointmentService --> AppointmentController: Fehlermeldung (400 Bad Request)
+    AppointmentController --> User: Antwort (400 Bad Request)
+else Gültige Eingaben
+    AppointmentController -> AppointmentService: Aktualisiere Termin
+    AppointmentService -> Database: Speichere aktualisierten Termin
+    Database --> AppointmentService: Bestätigung
+    AppointmentService --> AppointmentController: Erfolg (200 OK)
+    AppointmentController -> LogService: Protokolliere Aktion
+    LogService -> Database: Speichere Log
+    Database --> LogService: Bestätigung
+    LogService --> AppointmentController: Erfolg
+    AppointmentController --> User: Antwort (200 OK)
+end
+@enduml

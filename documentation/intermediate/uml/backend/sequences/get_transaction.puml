@@ -1,0 +1,22 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant TransactionController
+participant TransactionService
+participant Database
+
+User -> TransactionController: GET /api/v1/transactions/{id}
+TransactionController -> TransactionService: Hol Transaktion nach ID
+TransactionService -> Database: Suche Transaktion nach ID
+alt Transaktion nicht gefunden
+    Database --> TransactionService: Null
+    TransactionService --> TransactionController: Null
+    TransactionController --> User: Antwort (404 Not Found)
+else
+    Database --> TransactionService: Transaktionsdaten
+    TransactionService --> TransactionController: Transaktion als DTO
+    TransactionController --> User: Antwort (200 OK)
+end
+@enduml

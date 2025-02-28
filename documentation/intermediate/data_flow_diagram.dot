@@ -1,0 +1,98 @@
+digraph DataFlowDiagram {
+    // Graph styling
+    graph [rankdir=LR, fontname="Arial", fontsize=12];
+    node [shape=box, style=filled, fillcolor="#f0f8ff", fontname="Arial", fontsize=12];
+    edge [fontname="Arial", fontsize=10];
+
+    // Frontend (External Entity)
+    Frontend [label="Frontend\n(Sendet Anfragen)", fillcolor="#e6ffe6"];
+
+    // Controllers
+    subgraph cluster_controllers {
+        label="Controllers";
+        color=lightblue;
+        UserController [label="UserController"];
+        TransactionController [label="TransactionController"];
+        AppointmentController [label="AppointmentController"];
+        CustomerController [label="CustomerController"];
+        LogController [label="LogController"];
+    }
+
+    // Services
+    subgraph cluster_services {
+        label="Services";
+        color=lightblue;
+        UserService [label="UserService"];
+        TransactionService [label="TransactionService"];
+        AppointmentService [label="AppointmentService"];
+        CustomerService [label="CustomerService"];
+        LogService [label="LogService"];
+    }
+
+    // Models
+    subgraph cluster_models {
+        label="Models";
+        color=lightblue;
+        User [label="User"];
+        Transaction [label="Transaction"];
+        Appointment [label="Appointment"];
+        Customer [label="Customer"];
+        Log [label="Log"];
+    }
+
+    // Database
+    Database [label="Database", fillcolor="#ffe6e6"];
+
+    // Relationships
+
+    // Frontend -> Controllers
+    Frontend -> UserController [label="Login/Registrierung/Benutzer abrufen"];
+    Frontend -> TransactionController [label="Transaktion erstellen/abrufen/aktualisieren"];
+    Frontend -> AppointmentController [label="Termin erstellen/aktualisieren/löschen"];
+    Frontend -> CustomerController [label="Kunde erstellen/abrufen/aktualisieren/löschen"];
+    Frontend -> LogController [label="Logs abrufen"];
+
+    // Missing Relationships: Frontend -> Controllers
+    Frontend -> UserController [label="Benutzerliste/Mitarbeiterliste/Einstellungen abrufen/aktualisieren"];
+    Frontend -> UserController [label="Benutzertermine abrufen"];
+    Frontend -> CustomerController [label="Kundentermine abrufen"];
+    Frontend -> TransactionController [label="Alle Transaktionen abrufen"];
+    Frontend -> AppointmentController [label="Termine abrufen"];
+
+    // Controllers -> Services
+    UserController -> UserService [label="Benutzeroperationen ausführen"];
+    TransactionController -> TransactionService [label="Transaktionsoperationen ausführen"];
+    AppointmentController -> AppointmentService [label="Terminkalenderoperationen ausführen"];
+    CustomerController -> CustomerService [label="Kundenoperationen ausführen"];
+    LogController -> LogService [label="Logoperationen ausführen"];
+
+    // Missing Relationships: Controllers -> Services
+    UserController -> UserService [label="Benutzerliste/Mitarbeiterliste/Einstellungen verwalten"];
+    UserController -> UserService [label="Benutzertermine abrufen"];
+    CustomerController -> CustomerService [label="Kundentermine verwalten"];
+    TransactionController -> TransactionService [label="Alle Transaktionen verwalten"];
+    AppointmentController -> AppointmentService [label="Termine verwalten"];
+
+    // Services -> Models
+    UserService -> User [label="CRUD-Vorgänge"];
+    TransactionService -> Transaction [label="CRUD-Vorgänge"];
+    AppointmentService -> Appointment [label="CRUD-Vorgänge"];
+    CustomerService -> Customer [label="CRUD-Vorgänge"];
+    LogService -> Log [label="CRUD-Vorgänge"];
+
+    // Missing Relationships: Services -> Models
+    UserService -> Appointment [label="Benutzertermine abrufen"];
+    UserService -> Customer [label="Kundeninformationen abrufen"];
+    AppointmentService -> User [label="Teilnehmer abrufen"];
+    AppointmentService -> Customer [label="Teilnehmer abrufen"];
+    TransactionService -> User [label="Benutzerinformationen abrufen"];
+    TransactionService -> Customer [label="Kundeninformationen abrufen"];
+    CustomerService -> User [label="Manager zuweisen"];
+
+    // Models -> Database
+    User -> Database [label="Speichern/Abrufen"];
+    Transaction -> Database [label="Speichern/Abrufen"];
+    Appointment -> Database [label="Speichern/Abrufen"];
+    Customer -> Database [label="Speichern/Abrufen"];
+    Log -> Database [label="Speichern/Abrufen"];
+}

@@ -1,0 +1,18 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant UserController
+participant Database
+
+User -> UserController: GET /api/v1/settings
+UserController -> Database: Lese Benutzer aus der Sitzung
+Database --> UserController: Gibt Benutzerobjekt zurück
+alt Kein Benutzer in der Sitzung
+    UserController --> User: Antwort (401 Unauthorized)
+else Benutzer gefunden
+    UserController -> UserController: Erstelle SettingsDTO
+    UserController --> User: Antwort (200 OK) mit JSON-Einstellungen
+end
+@enduml

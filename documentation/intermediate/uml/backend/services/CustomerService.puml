@@ -1,0 +1,9 @@
+@startuml
+class CustomerService {
+    + createCustomer(Customer customer) : void
+    + getCustomers() : List<Customer>
+    + getCustomerById(UUID id) : Customer
+    + updateCustomer(UUID id, UpdateCustomer data) : void
+    + deleteCustomer(UUID id) : void
+}
+@enduml

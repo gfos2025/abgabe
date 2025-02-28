@@ -1,0 +1,38 @@
+@startuml
+class Customer {
+    - UUID id
+    - User assignedManager
+    - String name
+    - String surname
+    - String email
+    - String phoneNumber
+    - String address
+    - String company
+    - ContactStatus contactStatus
+    - List notes
+
+    + getId(), getName(), getSurname(), getEmail(), getPhoneNumber(), getAddress(), getCompany(), getContactStatus(), getNotes()
+    + setId(UUID), setName(String), setSurname(String), setEmail(String), setPhoneNumber(String), setAddress(String), setCompany(String), setContactStatus(ContactStatus), setNotes(List)
+}
+
+enum ContactStatus {
+    Contacted
+    NotContacted
+    WaitingForCallback
+    Interested
+}
+
+class CustomerNotes {
+    - UUID id
+    - User author
+    - Customer customer
+    - String note
+
+    + getId(), getAuthor(), getCustomer(), getNote()
+    + setId(UUID), setAuthor(User), setCustomer(Customer), setNote(String)
+}
+
+Customer "1" -- "0..*" CustomerNotes : hat Notizen
+Customer "1" -- "1" ContactStatus : hat einen Kontaktstatus
+Customer "1" -- "0..1" User : hat einen Manager
+@enduml

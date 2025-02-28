@@ -1,0 +1,24 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant UserController
+participant UserService
+participant Database
+
+User -> UserController: GET /api/v1/users/{id}
+UserController -> UserService: Lade Benutzer mit ID {id}
+alt Benutzer nicht gefunden
+    UserService --> UserController: Fehlermeldung (404 Not Found)
+    UserController --> User: Antwort (404 Not Found)
+else Berechtigungsfehler
+    UserService --> UserController: Fehlermeldung (403 Forbidden)
+    UserController --> User: Antwort (403 Forbidden)
+else Erfolgreiche Abfrage
+    UserService -> Database: Hole Benutzerdaten
+    Database --> UserService: Benutzerliste
+    UserService --> UserController: Benutzer-Liste
+    UserController --> User: Antwort (200 OK)
+end
+@enduml

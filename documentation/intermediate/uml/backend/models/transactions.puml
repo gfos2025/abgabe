@@ -1,0 +1,51 @@
+@startuml
+class Transaction {
+    - UUID id
+    - Customer customer
+    - User user
+    - double amount
+    - LocalDateTime timestamp
+    - TransactionStatus status
+    - String description
+
+    + Transaction()
+    + getId(), getCustomer(), getUser(), getAmount(), getTimestamp(), getStatus(), getDescription()
+    + setId(UUID), setCustomer(Customer), setUser(User), setAmount(double), setTimestamp(LocalDateTime), setStatus(TransactionStatus), setDescription(String)
+}
+
+class TransactionDTO {
+    - UUID id
+    - UUID customerId
+    - UUID userId
+    - double amount
+    - LocalDateTime timestamp
+    - TransactionStatus status
+    - String description
+
+    + TransactionDTO(Transaction)
+    + getId(), getCustomerId(), getUserId(), getAmount(), getTimestamp(), getStatus(), getDescription()
+    + setId(UUID), setCustomerId(UUID), setUserId(UUID), setAmount(double), setTimestamp(LocalDateTime), setStatus(TransactionStatus), setDescription(String)
+}
+
+class TransactionReport {
+    - int totalTransactions
+    - double totalRevenue
+    - double averageTransactionAmount
+    - Map transactionsByStatus
+
+    + getTotalTransactions(), setTotalTransactions(int)
+    + getTotalRevenue(), setTotalRevenue(double)
+    + getAverageTransactionAmount(), setAverageTransactionAmount(double)
+    + getTransactionsByStatus(), setTransactionsByStatus(Map)
+}
+
+enum TransactionStatus {
+    Completed
+    Pending
+    Failed
+}
+
+Transaction "1" -- "0..*" TransactionDTO : wird abgebildet durch
+Transaction "1" -- "1" TransactionStatus : hat einen Status
+TransactionReport "1" -- "0..*" Transaction : aggregiert Transaktionen
+@enduml

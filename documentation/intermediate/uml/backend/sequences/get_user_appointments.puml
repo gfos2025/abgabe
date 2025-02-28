@@ -1,0 +1,21 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant UserController
+participant AppointmentService
+participant Database
+
+User -> UserController: GET /api/v1/users/{id}/appointments
+UserController -> AppointmentService: Lade Termine für Benutzer {id}
+alt Fehler bei der Abfrage
+    AppointmentService --> UserController: Fehlermeldung (500 Internal Server Error)
+    UserController --> User: Antwort (500 Internal Server Error)
+else Erfolgreiche Abfrage
+    AppointmentService -> Database: Hole Termin-Daten
+    Database --> AppointmentService: Terminliste
+    AppointmentService --> UserController: Termin-Liste
+    UserController --> User: Antwort (200 OK)
+end
+@enduml

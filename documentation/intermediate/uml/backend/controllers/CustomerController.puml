@@ -1,0 +1,10 @@
+@startuml
+class CustomerController {
+    + createCustomer(Context ctx) : void
+    + getCustomers(Context ctx) : void
+    + getCustomer(Context ctx) : void
+    + updateCustomer(Context ctx) : void
+    + deleteCustomer(Context ctx) : void
+    + getCustomerAppointments(Context ctx) : void
+}
+@enduml

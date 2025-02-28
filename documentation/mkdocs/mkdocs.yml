@@ -1,0 +1,63 @@
+site_name: Worksale Documentation
+markdown_extensions:
+  - pymdownx.details
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Benutzerhandbuch:
+    - Einführung: user_manual.md
+    - Erste Schritte: user_manual/getting_started.md
+    - Funktionen: user_manual/features.md
+    - Problembehebung: user_manual/troubleshooting.md
+  - Frontend-Dokumentation:
+    - Installation: frontend/installation.md
+    - Einführung: frontend/introduction.md
+    - Design System:
+      - Farben: frontend/design_system/colors.md
+      - Icons: frontend/design_system/icons.md
+      - Komponenten: frontend/design_system/components.md
+    - Seiten: 
+      - Startlayout: frontend/pages/start_layout.md
+      - Startseite: frontend/pages/startpage.md
+      - Login: frontend/pages/login.md
+      - Dashboard Layout: frontend/pages/dashboard_layout.md
+      - Dashboard: frontend/pages/dashboard.md
+      - Kalendar: frontend/pages/calendar.md
+      - Kunden: frontend/pages/customers.md
+      - Transaktionen: frontend/pages/transactions.md
+      - Einstellungen: frontend/pages/settings.md
+      - Alle Nutzer: frontend/pages/users.md
+      - Protokolle: frontend/pages/logs.md
+    - Typen:
+      - Appointment: frontend/types/appointment.md
+      - Customer: frontend/types/customer.md
+      - Employee: frontend/types/employee.md
+      - Event: frontend/types/event.md
+      - Log: frontend/types/log.md
+      - Priority: frontend/types/priority.md
+      - Report: frontend/types/report.md
+      - Status: frontend/types/status.md
+      - Transaction: frontend/types/transaction.md
+    - Packages: frontend/packages.md
+    - Screenshots: frontend/screenshots.md
+  - Backend-Dokumentation:
+    - Installation: backend/installation.md
+    - Einführung: backend/introduction.md
+    - Anfragen:
+      - Überblick: backend/requests/overview.md
+      - Termine: backend/requests/appointments.md
+      - Authentifizierung: backend/requests/authentication.md
+      - Kunden: backend/requests/customers.md
+      - Logs: backend/requests/logs.md
+      - Transaktionen: backend/requests/transactions.md
+      - Benutzer: backend/requests/users.md
+    - Datenbank: backend/database.md
+    - Dienste: backend/services.md
+    - Steuerungen: backend/controllers.md
+
+theme:
+  name: material

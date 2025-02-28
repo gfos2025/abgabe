@@ -1,0 +1,9 @@
+@startuml
+class TransactionService {
+    + createTransaction(CreateTransaction transaction) : void
+    + getTransactions(Optional<UUID> user_id, Optional<UUID> customer_id, Optional<TransactionStatus> status) : List<TransactionDTO>
+    + getTransactionById(UUID id) : TransactionDTO
+    + updateTransaction(UUID id, UpdateTransaction data) : void
+    + generateReport(GetTransactionReport reportCriteria) : TransactionReport
+}
+@enduml

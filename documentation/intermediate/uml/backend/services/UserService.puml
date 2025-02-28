@@ -1,0 +1,11 @@
+@startuml
+class UserService {
+    + createUser(User user) : void
+    + getAllUsers() : List<User>
+    + getUserById(UUID id) : User
+    + getEmployees() : List<UserDTO>
+    + deleteUserById(UUID id) : void
+    + getUserByEmail(String email) : User
+    + updateSettings(Context ctx, UUID id, SettingsDTO settings) : void
+}
+@enduml

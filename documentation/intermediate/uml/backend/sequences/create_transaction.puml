@@ -1,0 +1,37 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant TransactionController
+participant TransactionService
+participant UserService
+participant CustomerService
+participant LogService
+participant Database
+
+User -> TransactionController: POST /api/v1/transactions/
+TransactionController -> TransactionService: Erstelle Transaktion
+TransactionService -> UserService: Hol Benutzer nach ID
+alt Benutzer nicht gefunden
+    UserService --> TransactionService: Fehlermeldung (400 Bad Request)
+    TransactionService --> TransactionController: Antwort (400 Bad Request)
+    TransactionController --> User: Antwort (400 Bad Request)
+else
+    TransactionService -> CustomerService: Hol Kunde nach ID
+    alt Kunde nicht gefunden
+        CustomerService --> TransactionService: Fehlermeldung (400 Bad Request)
+        TransactionService --> TransactionController: Antwort (400 Bad Request)
+        TransactionController --> User: Antwort (400 Bad Request)
+    else
+        TransactionService -> Database: Speichere Transaktion
+        Database --> TransactionService: Bestätigung
+        TransactionService --> TransactionController: Erfolg (201 Created)
+        TransactionController -> LogService: Protokolliere Aktion
+        LogService -> Database: Speichere Log
+        Database --> LogService: Bestätigung
+        LogService --> TransactionController: Erfolg
+        TransactionController --> User: Antwort (201 Created)
+    end
+end
+@enduml

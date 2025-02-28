@@ -1,0 +1,31 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant AppointmentController
+participant AppointmentService
+participant LogService
+participant Database
+
+User -> AppointmentController: DELETE /api/v1/appointments/{id}
+AppointmentController -> AppointmentService: Überprüfe Berechtigungen
+alt Keine Berechtigung
+    AppointmentController --> User: Antwort (403 Forbidden)
+else Berechtigung vorhanden
+    AppointmentController -> AppointmentService: Lösche Termin
+    alt Termin nicht gefunden
+        AppointmentService --> AppointmentController: Fehlermeldung (404 Not Found)
+        AppointmentController --> User: Antwort (404 Not Found)
+    else
+        AppointmentService -> Database: Lösche Termin
+        Database --> AppointmentService: Bestätigung
+        AppointmentService --> AppointmentController: Erfolg (200 OK)
+        AppointmentController -> LogService: Protokolliere Aktion
+        LogService -> Database: Speichere Log
+        Database --> LogService: Bestätigung
+        LogService --> AppointmentController: Erfolg
+        AppointmentController --> User: Antwort (200 OK)
+    end
+end
+@enduml

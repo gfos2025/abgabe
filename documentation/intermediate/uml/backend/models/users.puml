@@ -1,0 +1,52 @@
+@startuml
+class User {
+    - UUID id
+    - String name
+    - String surname
+    - String email
+    - String passwordHash
+    - Role role
+    - Boolean darkMode
+    - Boolean isLanguageGerman
+
+    + User()
+    + User(String, String, String, String, Role)
+    + getId(), getName(), getSurname(), getEmail(), getPasswordHash(), getRole(), isDarkMode(), isLanguageGerman()
+    + setName(String), setSurname(String), setEmail(String), setPasswordHash(String), setRole(Role), setDarkMode(Boolean), setLanguageGerman(Boolean)
+}
+
+class UserDTO {
+    - UUID id
+    - String name
+    - String surname
+    - String email
+    - Role role
+
+    + UserDTO()
+    + UserDTO(UUID, String, String, String, Role)
+    + UserDTO(User)
+    + getId(), getName(), getSurname(), getEmail(), getRole()
+    + setId(UUID), setName(String), setSurname(String), setEmail(String), setRole(Role)
+}
+
+class SettingsDTO {
+    - Boolean darkMode
+    - Boolean isLanguageGerman
+
+    + SettingsDTO(Boolean, Boolean)
+    + SettingsDTO()
+    + isDarkMode(), setDarkMode(Boolean)
+    + isLanguageGerman(), setLanguageGerman(Boolean)
+}
+
+enum Role {
+    ANY
+    CUSTOMER
+    EMPLOYEE
+    ADMIN
+}
+
+User "1" -- "1" Role : hat eine Rolle
+User "1" -- "0..*" UserDTO : wird abgebildet durch
+User "1" -- "0..*" SettingsDTO : hat Einstellungen
+@enduml

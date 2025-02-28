@@ -1,0 +1,33 @@
+@startuml
+
+skinparam Shadowing false
+skinparam maxMessageSize 300
+
+actor User
+participant UserController
+participant UserService
+participant LogService
+participant Database
+
+User -> UserController: POST /api/v1/auth/register
+UserController -> UserService: Validiere Registrierungsdaten
+alt Ungültige Eingaben
+    UserService --> UserController: Fehlermeldung (400 Bad Request)
+    UserController --> User: Antwort (400 Bad Request)
+else Gültige Eingaben
+    UserController -> UserService: Prüfe, ob der Benutzer eine höhere Rolle erstellen kann
+    alt Keine Berechtigung
+        UserController --> User: Antwort (403 Forbidden): "You cannot create a user with a higher role than your own"
+    else
+        UserService -> Database: Erstelle neuen Benutzer
+        Database --> UserService: Bestätige erfolgreiche Erstellung
+        UserService --> UserController: Erfolg (201 Created)
+        UserController -> LogService: Protokolliere Registrierungsaktion
+        LogService -> Database: Speichere Protokolleintrag
+        Database --> LogService: Bestätige erfolgreiche Speicherung
+        LogService --> UserController: Erfolg
+        UserController --> User: Antwort (201 Created): "Benutzer erfolgreich erstellt"
+    end
+end
+
+@enduml

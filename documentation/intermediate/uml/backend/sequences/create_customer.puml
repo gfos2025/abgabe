@@ -1,0 +1,32 @@
+@startuml
+skinparam Shadowing false
+skinparam maxMessageSize 300 
+
+actor User
+participant CustomerController
+participant CustomerService
+participant LogService
+participant Database 
+
+User -> CustomerController: POST /api/v1/customers/
+CustomerController -> CustomerController: Validiere Eingabedaten
+alt Ungültige Eingaben
+    CustomerController --> User: Antwort (400 Bad Request)
+else
+    CustomerController -> CustomerService: Erstelle neuen Kunden
+    CustomerService -> Database: Speichere neuen Kunden
+    alt Datenbankfehler
+        Database --> CustomerService: Fehler
+        CustomerService --> CustomerController: Interner Serverfehler (500)
+        CustomerController --> User: Antwort (500 Internal Server Error)
+    else
+        Database --> CustomerService: Bestätigung
+        CustomerService --> CustomerController: Erfolg
+        CustomerController -> LogService: Protokolliere Aktion
+        LogService -> Database: Speichere Log
+        Database --> LogService: Bestätigung
+        LogService --> CustomerController: Erfolg
+        CustomerController --> User: Antwort (201 Created)
+    end
+end
+@enduml
